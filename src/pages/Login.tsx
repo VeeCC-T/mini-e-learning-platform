@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { login, signup } from "@/lib/mockAuth";
 import { toast } from "sonner";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, ArrowLeft } from "lucide-react";
 
 /**
  * Login/Signup page - allows users to authenticate
@@ -83,6 +83,17 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-8 animate-scale-in">
+        {/* Back button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate("/home")}
+          className="mb-4"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Courses
+        </Button>
+
         {/* Platform logo */}
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent mb-4">
