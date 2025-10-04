@@ -9,6 +9,7 @@ import {
   isCourseCompleted,
   markCourseComplete,
 } from "@/lib/courseData";
+import { isAuthenticated } from "@/lib/mockAuth";
 import { ArrowLeft, CheckCircle2, Clock, TrendingUp, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
@@ -34,6 +35,15 @@ const CourseDetails = () => {
   // Handle marking course as complete
   const handleMarkComplete = () => {
     if (!course) return;
+
+    // Check if user is logged in
+    const userLoggedIn = isAuthenticated();
+    if (!userLoggedIn) {
+      toast.error("Please login to track your progress", {
+        description: "Click the login button in the header",
+      });
+      return;
+    }
 
     if (isCompleted) {
       toast.info("You've already completed this course! 🎉");

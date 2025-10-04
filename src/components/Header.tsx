@@ -52,7 +52,7 @@ const Header = () => {
                 onClick={() => navigate("/login")}
                 className="bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
               >
-                Login
+                Login / Sign Up
               </Button>
             )}
           </div>

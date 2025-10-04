@@ -8,21 +8,19 @@ import { Award } from "lucide-react";
 
 /**
  * Home page - displays all available courses as cards
- * Shows completion status for each course
- * Redirects to login if user is not authenticated
+ * Shows completion status for logged-in users
+ * Anyone can view courses without logging in!
  */
 const Home = () => {
-  const navigate = useNavigate();
   const [completedCourses, setCompletedCourses] = useState<string[]>([]);
+  const userLoggedIn = isAuthenticated();
 
-  // Check authentication and load completed courses
+  // Load completed courses if user is logged in
   useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate("/login");
-      return;
+    if (userLoggedIn) {
+      setCompletedCourses(getCompletedCourses());
     }
-    setCompletedCourses(getCompletedCourses());
-  }, [navigate]);
+  }, [userLoggedIn]);
 
   const completionPercentage = Math.round(
     (completedCourses.length / courses.length) * 100
@@ -42,13 +40,22 @@ const Home = () => {
             Choose from our carefully crafted courses and become a master in your field! 🚀
           </p>
 
-          {/* Progress indicator */}
-          {completedCourses.length > 0 && (
+          {/* Progress indicator - only show if logged in */}
+          {userLoggedIn && completedCourses.length > 0 && (
             <div className="mt-6 inline-flex items-center gap-3 bg-muted/50 px-6 py-3 rounded-full border border-border">
               <Award className="h-5 w-5 text-success" />
               <span className="text-sm font-semibold">
                 Your Progress: {completedCourses.length}/{courses.length} courses completed
                 ({completionPercentage}%)
+              </span>
+            </div>
+          )}
+
+          {/* Call to action for non-logged-in users */}
+          {!userLoggedIn && (
+            <div className="mt-6 inline-flex items-center gap-3 bg-muted/50 px-6 py-3 rounded-full border border-border">
+              <span className="text-sm">
+                💡 <strong>Login</strong> to track your progress and earn completion badges!
               </span>
             </div>
           )}
@@ -64,7 +71,7 @@ const Home = () => {
             >
               <CourseCard
                 course={course}
-                isCompleted={completedCourses.includes(course.id)}
+                isCompleted={userLoggedIn && completedCourses.includes(course.id)}
               />
             </div>
           ))}
